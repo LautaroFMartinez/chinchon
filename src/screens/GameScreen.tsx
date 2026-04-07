@@ -11,6 +11,38 @@ interface Props {
   onFinish: () => void
 }
 
+function ChevronLeftIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  )
+}
+
+function UndoIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 015 5v2M3 10l4-4M3 10l4 4" />
+    </svg>
+  )
+}
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  )
+}
+
+function PlusIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+    </svg>
+  )
+}
+
 export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
   const [showAddRound, setShowAddRound] = useState(false)
   const [editingRound, setEditingRound] = useState<number | null>(null)
@@ -77,41 +109,48 @@ export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
   return (
     <div className="min-h-dvh flex flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 border-b border-slate-800 sticky top-0 bg-slate-950/95 backdrop-blur-sm z-10">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)] glass sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <button onClick={onBack} className="p-2 -ml-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
+          <button 
+            onClick={onBack} 
+            className="p-2 -ml-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] rounded-xl hover:bg-[var(--color-surface)] transition-colors"
+            aria-label="Volver al inicio"
+          >
+            <ChevronLeftIcon className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-base font-semibold">Chinchón</h1>
-            <p className="text-xs text-slate-500">
-              Ronda {game.rounds.length + 1} &middot; Límite {game.scoreLimit}
-              {currentDealer && <> &middot; Reparte <span className="text-amber-400">{currentDealer.name}</span></>}
-            </p>
+            <h1 className="text-base font-semibold text-[var(--color-text-primary)]">Chinchon</h1>
+            <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)]">
+              <span>Ronda {game.rounds.length + 1}</span>
+              <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
+              <span>{game.scoreLimit} pts</span>
+              {currentDealer && (
+                <>
+                  <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
+                  <span className="text-[var(--color-warning)]">Reparte: {currentDealer.name}</span>
+                </>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-1">
           {game.rounds.length > 0 && (
             <button
               onClick={handleUndoLastRound}
-              className="p-2 text-slate-400 hover:text-amber-400 rounded-lg hover:bg-slate-800"
-              title="Deshacer última ronda"
+              className="p-2.5 text-[var(--color-text-secondary)] hover:text-[var(--color-warning)] rounded-xl hover:bg-[var(--color-warning-subtle)] transition-colors"
+              title="Deshacer ultima ronda"
+              aria-label="Deshacer ultima ronda"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 015 5v2M3 10l4-4M3 10l4 4" />
-              </svg>
+              <UndoIcon className="w-5 h-5" />
             </button>
           )}
           <button
             onClick={onFinish}
-            className="p-2 text-slate-400 hover:text-red-400 rounded-lg hover:bg-slate-800"
+            className="p-2.5 text-[var(--color-text-secondary)] hover:text-[var(--color-danger)] rounded-xl hover:bg-[var(--color-danger-subtle)] transition-colors"
             title="Terminar partida"
+            aria-label="Terminar partida"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <XIcon className="w-5 h-5" />
           </button>
         </div>
       </header>
@@ -122,7 +161,7 @@ export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
       )}
 
       {/* Score Table */}
-      <div className="flex-1 overflow-x-auto">
+      <div className="flex-1 overflow-x-auto animate-fade-slide-in">
         <ScoreTable
           game={game}
           totals={totals}
@@ -133,15 +172,17 @@ export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
 
       {/* Add round button */}
       {!isGameOver && (
-        <div className="sticky bottom-0 px-4 py-4 bg-slate-950/90 backdrop-blur-sm border-t border-slate-800">
+        <div className="sticky bottom-0 px-4 py-4 glass border-t border-[var(--color-border)] safe-bottom">
           <button
             onClick={() => setShowAddRound(true)}
-            className="w-full max-w-lg mx-auto block py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+            className="w-full max-w-lg mx-auto block py-4 text-white font-semibold rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            style={{ 
+              background: 'linear-gradient(135deg, var(--color-primary) 0%, #059669 100%)',
+              boxShadow: '0 4px 24px rgba(16, 185, 129, 0.3)'
+            }}
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            Anotar ronda
+            <PlusIcon className="w-5 h-5" />
+            <span>Anotar ronda</span>
           </button>
         </div>
       )}

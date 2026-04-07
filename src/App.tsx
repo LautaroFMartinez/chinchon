@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import type { Game, Screen } from './types'
 import { useLocalStorage } from './useLocalStorage'
 import { HomeScreen } from './screens/HomeScreen'
@@ -13,6 +13,7 @@ function App() {
     const saved = localStorage.getItem('chinchon-active-game')
     return saved ? JSON.parse(saved) : null
   })
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   const activeGame = games.find(g => g.id === activeGameId) ?? null
 
@@ -21,15 +22,24 @@ function App() {
     localStorage.setItem('chinchon-active-game', JSON.stringify(id))
   }, [])
 
-  const handleNewGame = useCallback(() => {
-    setScreen('setup')
+  // Screen transition helper
+  const navigateTo = useCallback((newScreen: Screen) => {
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setScreen(newScreen)
+      setIsTransitioning(false)
+    }, 150)
   }, [])
+
+  const handleNewGame = useCallback(() => {
+    navigateTo('setup')
+  }, [navigateTo])
 
   const handleStartGame = useCallback((game: Game) => {
     setGames(prev => [game, ...prev])
     setActiveGame(game.id)
-    setScreen('game')
-  }, [setGames, setActiveGame])
+    navigateTo('game')
+  }, [setGames, setActiveGame, navigateTo])
 
   const handleUpdateGame = useCallback((updated: Game) => {
     setGames(prev => prev.map(g => g.id === updated.id ? updated : g))
@@ -39,37 +49,56 @@ function App() {
     setGames(prev => prev.filter(g => g.id !== gameId))
     if (activeGameId === gameId) {
       setActiveGame(null)
-      setScreen('home')
+      navigateTo('home')
     }
-  }, [setGames, activeGameId, setActiveGame])
+  }, [setGames, activeGameId, setActiveGame, navigateTo])
 
   const handleContinueGame = useCallback(() => {
-    if (activeGame) setScreen('game')
-  }, [activeGame])
+    if (activeGame) navigateTo('game')
+  }, [activeGame, navigateTo])
 
   const handleGoHome = useCallback(() => {
-    setScreen('home')
-  }, [])
+    navigateTo('home')
+  }, [navigateTo])
 
   const handleViewHistory = useCallback(() => {
-    setScreen('history')
-  }, [])
+    navigateTo('history')
+  }, [navigateTo])
 
   const handleOpenGame = useCallback((gameId: string) => {
     setActiveGame(gameId)
-    setScreen('game')
-  }, [setActiveGame])
+    navigateTo('game')
+  }, [setActiveGame, navigateTo])
 
   const handleFinishGame = useCallback(() => {
     if (activeGame) {
       handleUpdateGame({ ...activeGame, finishedAt: Date.now() })
     }
     setActiveGame(null)
-    setScreen('home')
-  }, [activeGame, handleUpdateGame, setActiveGame])
+    navigateTo('home')
+  }, [activeGame, handleUpdateGame, setActiveGame, navigateTo])
+
+  // Register service worker for PWA
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {
+          // Service worker registration failed
+        })
+      })
+    }
+  }, [])
 
   return (
-    <div className="min-h-dvh bg-slate-950 text-slate-100">
+    <div 
+      className={`min-h-dvh transition-opacity duration-150 ${
+        isTransitioning ? 'opacity-0' : 'opacity-100'
+      }`}
+      style={{ 
+        background: 'linear-gradient(180deg, #09090b 0%, #0f0f12 50%, #09090b 100%)',
+        minHeight: '100dvh'
+      }}
+    >
       {screen === 'home' && (
         <HomeScreen
           activeGame={activeGame}
