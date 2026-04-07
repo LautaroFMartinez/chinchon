@@ -1,7 +1,8 @@
 {
-  "name": "chinchon-app",
+  "name": "chinchon",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Anotador de puntos para el juego de cartas Chinchon",
   "type": "module",
   "scripts": {
     "dev": "vite",

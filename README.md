@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+# Chinchon - Anotador de Puntos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Anotador de puntos para el juego de cartas [Chinchon](https://es.wikipedia.org/wiki/Chinch%C3%B3n_(juego_de_naipes)), optimizado para usar desde el celular durante la partida.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **2 a 8 jugadores** con nombres personalizados
+- **Limite de puntos configurable** (50, 70, 100 o 150)
+- **Tabla de puntajes** con colores segun el estado de cada jugador
+- **Barras de progreso** visuales hacia el limite de eliminacion
+- **Repartidor rotativo** con indicador en cada ronda
+- **Botones rapidos** para anotar puntajes frecuentes
+- **Editar y eliminar** rondas anteriores
+- **Deshacer** la ultima ronda
+- **Deteccion automatica** de jugadores eliminados y ganador
+- **Ranking final** al terminar la partida
+- **Historial** de partidas anteriores
+- **Funciona offline** (PWA instalable)
+- **Datos guardados** en el navegador (localStorage)
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [React](https://react.dev) + [TypeScript](https://www.typescriptlang.org)
+- [Vite](https://vite.dev) + [Bun](https://bun.sh)
+- [Tailwind CSS](https://tailwindcss.com) v4
+- [vite-plugin-pwa](https://vite-pwa-org.netlify.app) (Workbox)
 
-## Expanding the ESLint configuration
+## Desarrollo
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Instalar dependencias
+bun install
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Iniciar servidor de desarrollo
+bun run dev
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Build de produccion
+bun run build
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Preview del build
+bun run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Licencia
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+MIT
