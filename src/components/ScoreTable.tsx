@@ -31,7 +31,16 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
   }
 
   const leader = [...players].sort((a, b) => (totals[a.id] ?? 0) - (totals[b.id] ?? 0))[0]
-  const cumulativeByPlayer: Record<string, number> = Object.fromEntries(players.map(player => [player.id, 0]))
+  const cumulativeScoresByRound = rounds.reduce<Record<string, number>[]>((acc, round) => {
+    const previousTotals = acc[acc.length - 1] ?? Object.fromEntries(players.map(player => [player.id, 0]))
+    const currentTotals: Record<string, number> = {}
+    for (const player of players) {
+      const score = round.scores[player.id] ?? 0
+      currentTotals[player.id] = (previousTotals[player.id] ?? 0) + score
+    }
+    acc.push(currentTotals)
+    return acc
+  }, [])
 
   return (
     <div className="overflow-x-auto">
@@ -77,8 +86,7 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
               </td>
               {players.map((p, pi) => {
                 const score = round.scores[p.id] ?? 0
-                cumulativeByPlayer[p.id] += score
-                const cumulativeScore = cumulativeByPlayer[p.id]
+                const cumulativeScore = cumulativeScoresByRound[i]?.[p.id] ?? 0
                 const isDealer = round.dealerIndex === pi
                 return (
                   <td
