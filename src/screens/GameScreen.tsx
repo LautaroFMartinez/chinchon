@@ -75,10 +75,22 @@ export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
   }, [game.players, totals])
 
   const nextDealerIndex = useMemo(() => {
-    if (game.rounds.length === 0) return 0
-    const last = game.rounds[game.rounds.length - 1]
-    return (last.dealerIndex + 1) % game.players.length
-  }, [game.rounds, game.players.length])
+    if (game.players.length === 0) return 0
+
+    const startIndex = game.rounds.length === 0
+      ? -1
+      : game.rounds[game.rounds.length - 1].dealerIndex
+
+    for (let offset = 1; offset <= game.players.length; offset++) {
+      const candidateIndex = (startIndex + offset) % game.players.length
+      const candidate = game.players[candidateIndex]
+      if (candidate && !eliminatedPlayers.has(candidate.id)) {
+        return candidateIndex
+      }
+    }
+
+    return 0
+  }, [game.rounds, game.players, eliminatedPlayers])
 
   const currentDealer = game.players[nextDealerIndex]
 
