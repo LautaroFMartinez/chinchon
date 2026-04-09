@@ -88,12 +88,12 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
                 const cumulativeScore = cumulativeScoresByRound[i]?.[p.id] ?? 0
                 const isDealer = round.dealerIndex === pi
                 return (
-                  <td
-                    key={p.id}
-                    className={`px-4 lg:px-6 py-3 lg:py-4 text-center font-mono relative ${
-                      eliminatedPlayers.has(p.id)
-                        ? 'text-[var(--color-text-disabled)]'
-                        : score < 0
+                    <td
+                      key={p.id}
+                      className={`relative px-4 lg:px-6 py-3 lg:py-4 text-center font-mono ${
+                        eliminatedPlayers.has(p.id)
+                          ? 'text-[var(--color-text-disabled)]'
+                          : score < 0
                           ? 'text-[var(--color-primary)] font-semibold'
                           : score === 0
                             ? 'text-[var(--color-text-muted)]'
@@ -111,7 +111,7 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
                       </span>
                     )}
                     <span className="block">{score > 0 ? `+${score}` : score}</span>
-                    <span className="absolute bottom-1 right-1 lg:bottom-2 lg:right-2 text-[10px] lg:text-xs text-[var(--color-text-muted)]">
+                    <span className="absolute bottom-1 right-1 lg:bottom-2 lg:right-2 text-[10px] lg:text-xs text-[var(--color-text-muted)]" aria-label={`Acumulado: ${cumulativeScore}`}>
                       {cumulativeScore > 0 ? `+${cumulativeScore}` : cumulativeScore}
                     </span>
                   </td>
