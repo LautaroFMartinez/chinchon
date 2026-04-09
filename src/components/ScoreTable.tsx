@@ -31,15 +31,17 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
   }
 
   const leader = [...players].sort((a, b) => (totals[a.id] ?? 0) - (totals[b.id] ?? 0))[0]
-  const cumulativeScoresByRound = rounds.reduce<Record<string, number>[]>((acc, round) => {
-    const previousTotals = acc[acc.length - 1] ?? Object.fromEntries(players.map(player => [player.id, 0]))
+  const cumulativeScoresByRound: Record<string, number>[] = []
+  let previousTotals: Record<string, number> = Object.fromEntries(players.map(player => [player.id, 0]))
+  for (const round of rounds) {
     const currentTotals: Record<string, number> = {}
     for (const player of players) {
       const score = round.scores[player.id] ?? 0
       currentTotals[player.id] = (previousTotals[player.id] ?? 0) + score
     }
-    return [...acc, currentTotals]
-  }, [])
+    cumulativeScoresByRound.push(currentTotals)
+    previousTotals = currentTotals
+  }
 
   return (
     <div className="overflow-x-auto">
