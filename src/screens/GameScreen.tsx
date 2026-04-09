@@ -75,7 +75,7 @@ export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
   }, [game.players, totals])
 
   const nextDealerIndex = useMemo(() => {
-    if (game.players.length === 0) return 0
+    if (game.players.length === 0) return -1
 
     const startIndex = game.rounds.length === 0
       ? -1
@@ -89,10 +89,10 @@ export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
       }
     }
 
-    return 0
+    return -1
   }, [game.rounds, game.players, eliminatedPlayers])
 
-  const currentDealer = game.players[nextDealerIndex]
+  const currentDealer = nextDealerIndex >= 0 ? game.players[nextDealerIndex] : undefined
 
   const handleAddRound = useCallback((scores: Record<string, number>) => {
     const round: Round = { id: crypto.randomUUID(), scores, dealerIndex: nextDealerIndex }
