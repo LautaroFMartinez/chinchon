@@ -38,8 +38,7 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
       const score = round.scores[player.id] ?? 0
       currentTotals[player.id] = (previousTotals[player.id] ?? 0) + score
     }
-    acc.push(currentTotals)
-    return acc
+    return [...acc, currentTotals]
   }, [])
 
   return (
