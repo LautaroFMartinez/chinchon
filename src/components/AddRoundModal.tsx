@@ -66,7 +66,7 @@ export function AddRoundModal({ players, initialScores, roundNumber, onSave, onD
   const quickScores = [-10, 0, 5, 10, 15, 20, 25, 30]
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center modal-container">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/70 backdrop-blur-md animate-fade-in" 
@@ -76,35 +76,35 @@ export function AddRoundModal({ players, initialScores, roundNumber, onSave, onD
       
       {/* Modal */}
       <div 
-        className="relative w-full max-w-md bg-[var(--color-background-secondary)] border border-[var(--color-border)] rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col animate-slide-up"
+        className="relative w-full sm:max-w-md lg:max-w-lg bg-[var(--color-background-secondary)] border border-[var(--color-border)] rounded-t-3xl sm:rounded-3xl max-h-[90dvh] flex flex-col animate-slide-up"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border)]">
+        <div className="flex items-center justify-between px-6 lg:px-8 py-5 lg:py-6 border-b border-[var(--color-border)]">
           <div>
-            <h2 id="modal-title" className="text-lg font-semibold text-[var(--color-text-primary)]">
+            <h2 id="modal-title" className="text-lg lg:text-xl font-semibold text-[var(--color-text-primary)]">
               {isEditing ? `Editar ronda ${roundNumber}` : 'Anotar ronda'}
             </h2>
-            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+            <p className="text-xs lg:text-sm text-[var(--color-text-muted)] mt-0.5">
               {isEditing ? 'Modifica los puntos de esta ronda' : 'Ingresa los puntos de cada jugador'}
             </p>
           </div>
           <button 
             onClick={onClose} 
-            className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] rounded-xl hover:bg-[var(--color-surface)] transition-colors"
+            className="p-2 lg:p-2.5 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] rounded-xl hover:bg-[var(--color-surface)] transition-colors"
             aria-label="Cerrar"
           >
-            <XIcon className="w-5 h-5" />
+            <XIcon className="w-5 h-5 lg:w-6 lg:h-6" />
           </button>
         </div>
 
         {/* Scores */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+        <div className="flex-1 overflow-y-auto px-6 lg:px-8 py-5 lg:py-6 space-y-5 lg:space-y-6">
           {players.map((p, i) => (
             <div key={p.id} className="animate-scale-in" style={{ animationDelay: `${i * 30}ms` }}>
-              <label className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2">
+              <label className="block text-sm lg:text-base font-semibold text-[var(--color-text-primary)] mb-2 lg:mb-3">
                 {p.name}
               </label>
               <input
@@ -115,11 +115,11 @@ export function AddRoundModal({ players, initialScores, roundNumber, onSave, onD
                 onChange={e => setScores(prev => ({ ...prev, [p.id]: e.target.value }))}
                 onKeyDown={e => handleKeyDown(e, i)}
                 placeholder="0"
-                className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl px-4 py-4 text-[var(--color-text-primary)] text-xl font-mono text-center placeholder-[var(--color-text-disabled)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-subtle)] transition-all"
+                className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl px-4 py-4 lg:py-5 text-[var(--color-text-primary)] text-xl lg:text-2xl font-mono text-center placeholder-[var(--color-text-disabled)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-subtle)] transition-all"
               />
               
               {/* Quick score buttons */}
-              <div className="flex gap-2 mt-3 overflow-x-auto pb-1 -mx-1 px-1">
+              <div className="flex gap-2 lg:gap-3 mt-3 lg:mt-4 overflow-x-auto pb-1 -mx-1 px-1">
                 {quickScores.map(qs => {
                   const isSelected = parseInt(scores[p.id] ?? '0', 10) === qs
                   const isNegative = qs < 0
@@ -127,7 +127,7 @@ export function AddRoundModal({ players, initialScores, roundNumber, onSave, onD
                     <button
                       key={qs}
                       onClick={() => setScores(prev => ({ ...prev, [p.id]: qs.toString() }))}
-                      className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
+                      className={`shrink-0 px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg text-xs lg:text-sm font-mono font-medium transition-all ${
                         isSelected
                           ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/25'
                           : isNegative
@@ -145,18 +145,18 @@ export function AddRoundModal({ players, initialScores, roundNumber, onSave, onD
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-5 border-t border-[var(--color-border)] flex gap-3 safe-bottom">
+        <div className="px-6 lg:px-8 py-5 lg:py-6 border-t border-[var(--color-border)] flex gap-3 safe-bottom">
           {isEditing && onDelete && (
             <button
               onClick={onDelete}
-              className="px-5 py-3.5 bg-[var(--color-danger-subtle)] hover:bg-[var(--color-danger)]/20 text-[var(--color-danger)] font-semibold rounded-xl transition-colors"
+              className="px-5 lg:px-6 py-3.5 lg:py-4 bg-[var(--color-danger-subtle)] hover:bg-[var(--color-danger)]/20 text-[var(--color-danger)] font-semibold rounded-xl transition-colors lg:text-lg"
             >
               Eliminar
             </button>
           )}
           <button
             onClick={handleSave}
-            className="flex-1 py-3.5 text-white font-semibold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="flex-1 py-3.5 lg:py-4 text-white font-semibold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] lg:text-lg"
             style={{ 
               background: 'linear-gradient(135deg, var(--color-primary) 0%, #059669 100%)',
               boxShadow: '0 4px 24px rgba(16, 185, 129, 0.3)'
