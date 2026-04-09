@@ -60,37 +60,43 @@ function getWinner(game: Game) {
 export function HistoryScreen({ games, onBack, onOpenGame, onDeleteGame }: Props) {
   return (
     <div className="min-h-dvh flex flex-col">
-      <header className="flex items-center gap-4 px-4 py-4 border-b border-[var(--color-border)] glass sticky top-0 z-10">
-        <button 
-          onClick={onBack} 
-          className="p-2 -ml-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] rounded-xl hover:bg-[var(--color-surface)] transition-colors"
-          aria-label="Volver"
-        >
-          <ChevronLeftIcon className="w-5 h-5" />
-        </button>
-        <div>
-          <h1 className="text-lg font-semibold text-[var(--color-text-primary)]">Historial</h1>
-          <p className="text-xs text-[var(--color-text-muted)]">{games.length} partida{games.length !== 1 ? 's' : ''}</p>
+      {/* Decorative background elements for desktop */}
+      <div className="desktop-decorative desktop-decorative-1" aria-hidden="true" />
+      <div className="desktop-decorative desktop-decorative-2" aria-hidden="true" />
+      
+      <header className="flex items-center gap-4 px-4 lg:px-6 py-4 border-b border-[var(--color-border)] glass sticky top-0 z-10">
+        <div className="w-full max-w-4xl mx-auto flex items-center gap-4">
+          <button 
+            onClick={onBack} 
+            className="p-2 -ml-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] rounded-xl hover:bg-[var(--color-surface)] transition-colors"
+            aria-label="Volver"
+          >
+            <ChevronLeftIcon className="w-5 h-5 lg:w-6 lg:h-6" />
+          </button>
+          <div>
+            <h1 className="text-lg lg:text-xl font-semibold text-[var(--color-text-primary)]">Historial</h1>
+            <p className="text-xs lg:text-sm text-[var(--color-text-muted)]">{games.length} partida{games.length !== 1 ? 's' : ''}</p>
+          </div>
         </div>
       </header>
 
-      <div className="flex-1 px-4 py-4 max-w-lg mx-auto w-full animate-fade-slide-in">
+      <div className="flex-1 px-4 py-4 lg:py-8 w-full max-w-4xl mx-auto animate-fade-slide-in relative z-10">
         {games.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-[var(--color-surface)] flex items-center justify-center mb-4">
-              <CalendarIcon className="w-8 h-8 text-[var(--color-text-muted)]" />
+            <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-[var(--color-surface)] flex items-center justify-center mb-4">
+              <CalendarIcon className="w-8 h-8 lg:w-10 lg:h-10 text-[var(--color-text-muted)]" />
             </div>
-            <p className="text-[var(--color-text-secondary)] font-medium">No hay partidas guardadas</p>
-            <p className="text-sm text-[var(--color-text-muted)] mt-1">Las partidas que juegues apareceran aqui</p>
+            <p className="text-[var(--color-text-secondary)] font-medium lg:text-lg">No hay partidas guardadas</p>
+            <p className="text-sm lg:text-base text-[var(--color-text-muted)] mt-1">Las partidas que juegues apareceran aqui</p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="grid gap-3 lg:gap-4 lg:grid-cols-2">
             {games.map((game, index) => {
               const winner = getWinner(game)
               return (
                 <div
                   key={game.id}
-                  className="card p-4 animate-scale-in"
+                  className="card p-4 lg:p-5 animate-scale-in hover-lift"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex items-start justify-between">
@@ -100,7 +106,7 @@ export function HistoryScreen({ games, onBack, onOpenGame, onDeleteGame }: Props
                     >
                       {/* Players */}
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="text-sm font-semibold text-[var(--color-text-primary)]">
+                        <span className="text-sm lg:text-base font-semibold text-[var(--color-text-primary)]">
                           {game.players.map(p => p.name).join(', ')}
                         </span>
                         {game.finishedAt && (
@@ -111,7 +117,7 @@ export function HistoryScreen({ games, onBack, onOpenGame, onDeleteGame }: Props
                       </div>
                       
                       {/* Stats */}
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-[var(--color-text-muted)]">
+                      <div className="flex flex-wrap items-center gap-3 text-xs lg:text-sm text-[var(--color-text-muted)]">
                         <span className="flex items-center gap-1">
                           <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]" />
                           {game.rounds.length} rondas
@@ -122,25 +128,25 @@ export function HistoryScreen({ games, onBack, onOpenGame, onDeleteGame }: Props
                         </span>
                         {winner && (
                           <span className="flex items-center gap-1.5 text-[var(--color-primary)]">
-                            <TrophyIcon className="w-3.5 h-3.5" />
+                            <TrophyIcon className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                             {winner.name}
                           </span>
                         )}
                       </div>
                       
                       {/* Date */}
-                      <p className="text-xs text-[var(--color-text-disabled)] mt-2 flex items-center gap-1.5">
-                        <CalendarIcon className="w-3.5 h-3.5" />
+                      <p className="text-xs lg:text-sm text-[var(--color-text-disabled)] mt-2 flex items-center gap-1.5">
+                        <CalendarIcon className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                         {formatDate(game.createdAt)}
                       </p>
                     </button>
                     
                     <button
                       onClick={() => onDeleteGame(game.id)}
-                      className="p-2.5 text-[var(--color-text-disabled)] hover:text-[var(--color-danger)] rounded-xl hover:bg-[var(--color-danger-subtle)] transition-colors ml-2 shrink-0"
+                      className="p-2.5 lg:p-3 text-[var(--color-text-disabled)] hover:text-[var(--color-danger)] rounded-xl hover:bg-[var(--color-danger-subtle)] transition-colors ml-2 shrink-0"
                       aria-label="Eliminar partida"
                     >
-                      <TrashIcon className="w-4 h-4" />
+                      <TrashIcon className="w-4 h-4 lg:w-5 lg:h-5" />
                     </button>
                   </div>
                 </div>

@@ -20,12 +20,12 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
 
   if (rounds.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-center px-4">
-        <div className="w-16 h-16 rounded-2xl bg-[var(--color-surface)] flex items-center justify-center mb-4">
-          <NoteIcon className="w-8 h-8 text-[var(--color-text-muted)]" />
+      <div className="flex flex-col items-center justify-center py-20 lg:py-32 text-center px-4">
+        <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-[var(--color-surface)] flex items-center justify-center mb-4">
+          <NoteIcon className="w-8 h-8 lg:w-10 lg:h-10 text-[var(--color-text-muted)]" />
         </div>
-        <p className="text-[var(--color-text-secondary)] font-medium">Sin rondas anotadas</p>
-        <p className="text-sm text-[var(--color-text-muted)] mt-1">Presiona el boton para anotar la primera ronda</p>
+        <p className="text-[var(--color-text-secondary)] font-medium lg:text-lg">Sin rondas anotadas</p>
+        <p className="text-sm lg:text-base text-[var(--color-text-muted)] mt-1">Presiona el boton para anotar la primera ronda</p>
       </div>
     )
   }
@@ -34,16 +34,16 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="w-full text-sm lg:text-base">
         <thead>
           <tr className="border-b border-[var(--color-border)]">
-            <th className="sticky left-0 bg-[var(--color-background)] px-4 py-4 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider w-14">
+            <th className="sticky left-0 bg-[var(--color-background)] lg:bg-[var(--color-surface)] px-4 lg:px-6 py-4 lg:py-5 text-left text-xs lg:text-sm font-semibold text-[var(--color-text-muted)] uppercase tracking-wider w-14 lg:w-20">
               #
             </th>
             {players.map(p => (
               <th
                 key={p.id}
-                className={`px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider min-w-[90px] ${
+                className={`px-4 lg:px-6 py-4 lg:py-5 text-center text-xs lg:text-sm font-semibold uppercase tracking-wider min-w-[90px] lg:min-w-[120px] ${
                   eliminatedPlayers.has(p.id)
                     ? 'text-[var(--color-danger)]/60'
                     : p.id === leader?.id
@@ -52,9 +52,9 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
                 }`}
               >
                 <div className="flex flex-col items-center gap-1">
-                  <span className="truncate max-w-[80px]">{p.name}</span>
+                  <span className="truncate max-w-[80px] lg:max-w-[100px]">{p.name}</span>
                   {eliminatedPlayers.has(p.id) && (
-                    <span className="text-[10px] font-medium px-1.5 py-0.5 bg-[var(--color-danger-subtle)] text-[var(--color-danger)] rounded-full">
+                    <span className="text-[10px] lg:text-xs font-medium px-1.5 py-0.5 bg-[var(--color-danger-subtle)] text-[var(--color-danger)] rounded-full">
                       eliminado
                     </span>
                   )}
@@ -68,10 +68,10 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
             <tr
               key={round.id}
               onClick={() => onEditRound(i)}
-              className="border-b border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] cursor-pointer active:bg-[var(--color-surface-hover)] transition-colors animate-row"
+              className="border-b border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] lg:hover:bg-[var(--color-surface-hover)] cursor-pointer active:bg-[var(--color-surface-hover)] transition-colors animate-row"
               style={{ animationDelay: `${i * 30}ms` }}
             >
-              <td className="sticky left-0 bg-[var(--color-background)] px-4 py-3 text-[var(--color-text-muted)] font-mono text-xs font-medium">
+              <td className="sticky left-0 bg-[var(--color-background)] lg:bg-[var(--color-surface)] px-4 lg:px-6 py-3 lg:py-4 text-[var(--color-text-muted)] font-mono text-xs lg:text-sm font-medium">
                 {i + 1}
               </td>
               {players.map((p, pi) => {
@@ -80,7 +80,7 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
                 return (
                   <td
                     key={p.id}
-                    className={`px-4 py-3 text-center font-mono relative ${
+                    className={`px-4 lg:px-6 py-3 lg:py-4 text-center font-mono relative ${
                       eliminatedPlayers.has(p.id)
                         ? 'text-[var(--color-text-disabled)]'
                         : score < 0
@@ -94,7 +94,7 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
                   >
                     {isDealer && (
                       <span 
-                        className="absolute top-1 right-1 w-4 h-4 flex items-center justify-center text-[10px] bg-[var(--color-warning-subtle)] text-[var(--color-warning)] rounded-full" 
+                        className="absolute top-1 right-1 lg:top-2 lg:right-2 w-4 h-4 lg:w-5 lg:h-5 flex items-center justify-center text-[10px] lg:text-xs bg-[var(--color-warning-subtle)] text-[var(--color-warning)] rounded-full" 
                         title="Repartidor"
                       >
                         R
@@ -109,7 +109,7 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
         </tbody>
         <tfoot>
           <tr className="border-t-2 border-[var(--color-border)]">
-            <td className="sticky left-0 bg-[var(--color-background)] px-4 py-4 text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">
+            <td className="sticky left-0 bg-[var(--color-background)] lg:bg-[var(--color-surface)] px-4 lg:px-6 py-4 lg:py-5 text-xs lg:text-sm font-bold text-[var(--color-text-muted)] uppercase tracking-wider">
               Total
             </td>
             {players.map(p => {
@@ -118,7 +118,7 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
               return (
                 <td
                   key={p.id}
-                  className={`px-4 py-4 text-center font-mono font-bold text-lg ${
+                  className={`px-4 lg:px-6 py-4 lg:py-5 text-center font-mono font-bold text-lg lg:text-xl ${
                     eliminatedPlayers.has(p.id)
                       ? 'text-[var(--color-danger)]/60 line-through'
                       : isLeader
@@ -133,13 +133,13 @@ export function ScoreTable({ game, totals, eliminatedPlayers, onEditRound }: Pro
           </tr>
           {/* Progress bar row */}
           <tr>
-            <td className="sticky left-0 bg-[var(--color-background)]"></td>
+            <td className="sticky left-0 bg-[var(--color-background)] lg:bg-[var(--color-surface)]"></td>
             {players.map(p => {
               const total = totals[p.id] ?? 0
               const pct = Math.min((total / game.scoreLimit) * 100, 100)
               return (
-                <td key={p.id} className="px-4 pb-4">
-                  <div className="h-2 bg-[var(--color-surface)] rounded-full overflow-hidden">
+                <td key={p.id} className="px-4 lg:px-6 pb-4 lg:pb-5">
+                  <div className="h-2 lg:h-2.5 bg-[var(--color-surface)] lg:bg-[var(--color-surface-hover)] rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
                         pct >= 90 

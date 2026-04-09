@@ -67,142 +67,153 @@ export function HomeScreen({ activeGame, hasHistory, onNewGame, onContinueGame, 
   const hasActiveGame = activeGame && !activeGame.finishedAt
 
   return (
-    <div className="flex flex-col min-h-dvh px-6 py-8 animate-fade-slide-in">
-      {/* Header with branding */}
-      <header className="flex-shrink-0 pt-8 pb-4">
-        <div className="flex flex-col items-center text-center">
-          {/* Logo */}
-          <div className="relative mb-6">
-            <div className="absolute inset-0 bg-[var(--color-primary)] opacity-20 blur-2xl rounded-full scale-150" />
-            <CardIcon className="relative w-20 h-20 text-[var(--color-primary)] animate-float" />
-          </div>
-          
-          {/* Title */}
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-            <span className="gradient-text">Chinchon</span>
-          </h1>
-          <p className="text-[var(--color-text-secondary)] text-lg font-medium">
-            Anotador de puntos
-          </p>
-        </div>
-      </header>
-
-      {/* Main content */}
-      <main className="flex-1 flex flex-col justify-center py-8">
-        <div className="flex flex-col gap-4 w-full max-w-sm mx-auto">
-          {/* Continue game button */}
-          {hasActiveGame && (
-            <button
-              onClick={onContinueGame}
-              className="group relative w-full py-4 px-6 rounded-2xl font-semibold text-white overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-              style={{ 
-                background: 'linear-gradient(135deg, var(--color-primary) 0%, #059669 100%)',
-                boxShadow: '0 4px 24px rgba(16, 185, 129, 0.3)'
-              }}
-            >
-              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative flex items-center justify-center gap-3">
-                <PlayIcon className="w-5 h-5" />
-                <span>Continuar partida</span>
-              </div>
-            </button>
-          )}
-
-          {/* New game button */}
-          <button
-            onClick={onNewGame}
-            className={`group w-full py-4 px-6 rounded-2xl font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${
-              hasActiveGame
-                ? 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-text-muted)]'
-                : 'text-white'
-            }`}
-            style={!hasActiveGame ? { 
-              background: 'linear-gradient(135deg, var(--color-primary) 0%, #059669 100%)',
-              boxShadow: '0 4px 24px rgba(16, 185, 129, 0.3)'
-            } : undefined}
-          >
-            <div className="flex items-center justify-center gap-3">
-              <PlusIcon className="w-5 h-5" />
-              <span>Nueva partida</span>
+    <div className="flex flex-col min-h-dvh animate-fade-slide-in">
+      {/* Decorative background elements for desktop */}
+      <div className="desktop-decorative desktop-decorative-1" aria-hidden="true" />
+      <div className="desktop-decorative desktop-decorative-2" aria-hidden="true" />
+      
+      <div className="flex flex-col flex-1 px-6 py-8 w-full max-w-2xl mx-auto relative z-10">
+        {/* Header with branding */}
+        <header className="flex-shrink-0 pt-8 pb-4 lg:pt-16 lg:pb-8">
+          <div className="flex flex-col items-center text-center">
+            {/* Logo */}
+            <div className="relative mb-6 lg:mb-8">
+              <div className="absolute inset-0 bg-[var(--color-primary)] opacity-20 blur-2xl rounded-full scale-150" />
+              <CardIcon className="relative w-20 h-20 lg:w-28 lg:h-28 text-[var(--color-primary)] animate-float" />
             </div>
-          </button>
+            
+            {/* Title */}
+            <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight mb-2 lg:mb-3">
+              <span className="gradient-text">Chinchon</span>
+            </h1>
+            <p className="text-[var(--color-text-secondary)] text-lg lg:text-xl font-medium">
+              Anotador de puntos
+            </p>
+          </div>
+        </header>
 
-          {/* History button */}
-          {hasHistory && (
-            <button
-              onClick={onViewHistory}
-              className="w-full py-4 px-6 rounded-2xl font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface)] transition-all duration-200"
-            >
-              <div className="flex items-center justify-center gap-3">
-                <HistoryIcon className="w-5 h-5" />
-                <span>Ver historial</span>
-              </div>
-            </button>
-          )}
-        </div>
+        {/* Main content */}
+        <main className="flex-1 flex flex-col justify-center py-8 lg:py-12">
+          {/* Desktop two-column layout when there's an active game */}
+          <div className={`${hasActiveGame ? 'lg:grid lg:grid-cols-2 lg:gap-8 lg:items-start' : ''}`}>
+            {/* Buttons section */}
+            <div className="flex flex-col gap-4 w-full max-w-sm mx-auto lg:max-w-none">
+              {/* Continue game button */}
+              {hasActiveGame && (
+                <button
+                  onClick={onContinueGame}
+                  className="group relative w-full py-4 lg:py-5 px-6 rounded-2xl font-semibold text-white overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  style={{ 
+                    background: 'linear-gradient(135deg, var(--color-primary) 0%, #059669 100%)',
+                    boxShadow: '0 4px 24px rgba(16, 185, 129, 0.3)'
+                  }}
+                >
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative flex items-center justify-center gap-3">
+                    <PlayIcon className="w-5 h-5 lg:w-6 lg:h-6" />
+                    <span className="lg:text-lg">Continuar partida</span>
+                  </div>
+                </button>
+              )}
 
-        {/* Active game card */}
-        {hasActiveGame && (
-          <div className="mt-8 max-w-sm mx-auto w-full animate-scale-in">
-            <div className="card p-5">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[var(--color-primary-subtle)] flex items-center justify-center">
-                    <CardIcon className="w-5 h-5 text-[var(--color-primary)]" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-[var(--color-text-primary)]">Partida en curso</p>
-                    <p className="text-xs text-[var(--color-text-muted)]">
-                      Ronda {activeGame.rounds.length + 1}
-                    </p>
-                  </div>
+              {/* New game button */}
+              <button
+                onClick={onNewGame}
+                className={`group w-full py-4 lg:py-5 px-6 rounded-2xl font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${
+                  hasActiveGame
+                    ? 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-text-muted)]'
+                    : 'text-white'
+                }`}
+                style={!hasActiveGame ? { 
+                  background: 'linear-gradient(135deg, var(--color-primary) 0%, #059669 100%)',
+                  boxShadow: '0 4px 24px rgba(16, 185, 129, 0.3)'
+                } : undefined}
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <PlusIcon className="w-5 h-5 lg:w-6 lg:h-6" />
+                  <span className="lg:text-lg">Nueva partida</span>
                 </div>
-                <span className="px-2.5 py-1 text-xs font-medium bg-[var(--color-primary-subtle)] text-[var(--color-primary)] rounded-full">
-                  Activa
-                </span>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm">
-                  <UsersIcon className="w-4 h-4 text-[var(--color-text-muted)]" />
-                  <span className="text-[var(--color-text-secondary)]">
-                    {activeGame.players.map(p => p.name).join(', ')}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <TargetIcon className="w-4 h-4 text-[var(--color-text-muted)]" />
-                  <span className="text-[var(--color-text-secondary)]">
-                    Limite: {activeGame.scoreLimit} puntos
-                  </span>
-                </div>
-              </div>
-              
-              {/* Progress indicator */}
-              {activeGame.rounds.length > 0 && (
-                <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
-                  <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] mb-2">
-                    <span>Progreso</span>
-                    <span>{activeGame.rounds.length} rondas jugadas</span>
+              </button>
+
+              {/* History button */}
+              {hasHistory && (
+                <button
+                  onClick={onViewHistory}
+                  className="w-full py-4 lg:py-5 px-6 rounded-2xl font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface)] transition-all duration-200"
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <HistoryIcon className="w-5 h-5 lg:w-6 lg:h-6" />
+                    <span className="lg:text-lg">Ver historial</span>
                   </div>
-                  <div className="h-1.5 bg-[var(--color-surface-hover)] rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-[var(--color-primary)] to-emerald-400 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.min((activeGame.rounds.length / 10) * 100, 100)}%` }}
-                    />
-                  </div>
-                </div>
+                </button>
               )}
             </div>
-          </div>
-        )}
-      </main>
 
-      {/* Footer */}
-      <footer className="flex-shrink-0 py-6">
-        <p className="text-center text-xs text-[var(--color-text-disabled)]">
-          Desliza para jugar
-        </p>
-      </footer>
+            {/* Active game card - moves to side on desktop */}
+            {hasActiveGame && (
+              <div className="mt-8 lg:mt-0 max-w-sm mx-auto lg:max-w-none w-full animate-scale-in">
+                <div className="card p-5 lg:p-6 hover-lift">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-[var(--color-primary-subtle)] flex items-center justify-center">
+                        <CardIcon className="w-5 h-5 lg:w-6 lg:h-6 text-[var(--color-primary)]" />
+                      </div>
+                      <div>
+                        <p className="text-sm lg:text-base font-semibold text-[var(--color-text-primary)]">Partida en curso</p>
+                        <p className="text-xs lg:text-sm text-[var(--color-text-muted)]">
+                          Ronda {activeGame.rounds.length + 1}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="px-2.5 py-1 text-xs font-medium bg-[var(--color-primary-subtle)] text-[var(--color-primary)] rounded-full">
+                      Activa
+                    </span>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-sm lg:text-base">
+                      <UsersIcon className="w-4 h-4 lg:w-5 lg:h-5 text-[var(--color-text-muted)]" />
+                      <span className="text-[var(--color-text-secondary)]">
+                        {activeGame.players.map(p => p.name).join(', ')}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm lg:text-base">
+                      <TargetIcon className="w-4 h-4 lg:w-5 lg:h-5 text-[var(--color-text-muted)]" />
+                      <span className="text-[var(--color-text-secondary)]">
+                        Limite: {activeGame.scoreLimit} puntos
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Progress indicator */}
+                  {activeGame.rounds.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
+                      <div className="flex items-center justify-between text-xs lg:text-sm text-[var(--color-text-muted)] mb-2">
+                        <span>Progreso</span>
+                        <span>{activeGame.rounds.length} rondas jugadas</span>
+                      </div>
+                      <div className="h-1.5 lg:h-2 bg-[var(--color-surface-hover)] rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-[var(--color-primary)] to-emerald-400 rounded-full transition-all duration-500"
+                          style={{ width: `${Math.min((activeGame.rounds.length / 10) * 100, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </main>
+
+        {/* Footer */}
+        <footer className="flex-shrink-0 py-6 lg:py-8">
+          <p className="text-center text-xs lg:text-sm text-[var(--color-text-disabled)]">
+            <span className="lg:hidden">Desliza para jugar</span>
+            <span className="hidden lg:inline">Haz clic en un boton para comenzar</span>
+          </p>
+        </footer>
+      </div>
     </div>
   )
 }

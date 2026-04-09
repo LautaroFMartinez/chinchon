@@ -43,6 +43,24 @@ function PlusIcon({ className }: { className?: string }) {
   )
 }
 
+function UsersIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+    </svg>
+  )
+}
+
+function TargetIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+      <circle cx="12" cy="12" r="1" fill="currentColor" />
+    </svg>
+  )
+}
+
 export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
   const [showAddRound, setShowAddRound] = useState(false)
   const [editingRound, setEditingRound] = useState<number | null>(null)
@@ -108,50 +126,56 @@ export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
 
   return (
     <div className="min-h-dvh flex flex-col">
+      {/* Decorative background elements for desktop */}
+      <div className="desktop-decorative desktop-decorative-1" aria-hidden="true" />
+      <div className="desktop-decorative desktop-decorative-2" aria-hidden="true" />
+      
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)] glass sticky top-0 z-10">
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={onBack} 
-            className="p-2 -ml-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] rounded-xl hover:bg-[var(--color-surface)] transition-colors"
-            aria-label="Volver al inicio"
-          >
-            <ChevronLeftIcon className="w-5 h-5" />
-          </button>
-          <div>
-            <h1 className="text-base font-semibold text-[var(--color-text-primary)]">Chinchon</h1>
-            <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)]">
-              <span>Ronda {game.rounds.length + 1}</span>
-              <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
-              <span>{game.scoreLimit} pts</span>
-              {currentDealer && (
-                <>
-                  <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
-                  <span className="text-[var(--color-warning)]">Reparte: {currentDealer.name}</span>
-                </>
-              )}
+      <header className="flex items-center justify-between px-4 lg:px-6 py-3 lg:py-4 border-b border-[var(--color-border)] glass sticky top-0 z-10">
+        <div className="w-full max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={onBack} 
+              className="p-2 -ml-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] rounded-xl hover:bg-[var(--color-surface)] transition-colors"
+              aria-label="Volver al inicio"
+            >
+              <ChevronLeftIcon className="w-5 h-5 lg:w-6 lg:h-6" />
+            </button>
+            <div>
+              <h1 className="text-base lg:text-xl font-semibold text-[var(--color-text-primary)]">Chinchon</h1>
+              <div className="flex items-center gap-2 text-xs lg:text-sm text-[var(--color-text-muted)]">
+                <span>Ronda {game.rounds.length + 1}</span>
+                <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
+                <span>{game.scoreLimit} pts</span>
+                {currentDealer && (
+                  <>
+                    <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
+                    <span className="text-[var(--color-warning)]">Reparte: {currentDealer.name}</span>
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center gap-1">
-          {game.rounds.length > 0 && (
+          <div className="flex items-center gap-1 lg:gap-2">
+            {game.rounds.length > 0 && (
+              <button
+                onClick={handleUndoLastRound}
+                className="p-2.5 lg:p-3 text-[var(--color-text-secondary)] hover:text-[var(--color-warning)] rounded-xl hover:bg-[var(--color-warning-subtle)] transition-colors"
+                title="Deshacer ultima ronda"
+                aria-label="Deshacer ultima ronda"
+              >
+                <UndoIcon className="w-5 h-5 lg:w-6 lg:h-6" />
+              </button>
+            )}
             <button
-              onClick={handleUndoLastRound}
-              className="p-2.5 text-[var(--color-text-secondary)] hover:text-[var(--color-warning)] rounded-xl hover:bg-[var(--color-warning-subtle)] transition-colors"
-              title="Deshacer ultima ronda"
-              aria-label="Deshacer ultima ronda"
+              onClick={onFinish}
+              className="p-2.5 lg:p-3 text-[var(--color-text-secondary)] hover:text-[var(--color-danger)] rounded-xl hover:bg-[var(--color-danger-subtle)] transition-colors"
+              title="Terminar partida"
+              aria-label="Terminar partida"
             >
-              <UndoIcon className="w-5 h-5" />
+              <XIcon className="w-5 h-5 lg:w-6 lg:h-6" />
             </button>
-          )}
-          <button
-            onClick={onFinish}
-            className="p-2.5 text-[var(--color-text-secondary)] hover:text-[var(--color-danger)] rounded-xl hover:bg-[var(--color-danger-subtle)] transition-colors"
-            title="Terminar partida"
-            aria-label="Terminar partida"
-          >
-            <XIcon className="w-5 h-5" />
-          </button>
+          </div>
         </div>
       </header>
 
@@ -160,19 +184,93 @@ export function GameScreen({ game, onUpdate, onBack, onFinish }: Props) {
         <GameOverBanner winner={winner} ranking={ranking} totals={totals} onFinish={onFinish} />
       )}
 
-      {/* Score Table */}
-      <div className="flex-1 overflow-x-auto animate-fade-slide-in">
-        <ScoreTable
-          game={game}
-          totals={totals}
-          eliminatedPlayers={eliminatedPlayers}
-          onEditRound={setEditingRound}
-        />
+      {/* Main content - desktop layout with sidebar */}
+      <div className="flex-1 w-full max-w-6xl mx-auto relative z-10">
+        <div className="lg:grid lg:grid-cols-[1fr,320px] lg:gap-6 lg:p-6">
+          {/* Score Table */}
+          <div className="overflow-x-auto animate-fade-slide-in lg:card lg:overflow-hidden">
+            <ScoreTable
+              game={game}
+              totals={totals}
+              eliminatedPlayers={eliminatedPlayers}
+              onEditRound={setEditingRound}
+            />
+          </div>
+
+          {/* Desktop sidebar with game info */}
+          <aside className="hidden lg:block">
+            <div className="card p-6 sticky top-24">
+              <h3 className="text-sm font-medium text-[var(--color-text-muted)] uppercase tracking-wider mb-4">Informacion del juego</h3>
+              
+              <div className="space-y-4">
+                {/* Players */}
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-[var(--color-primary-subtle)] flex items-center justify-center shrink-0">
+                    <UsersIcon className="w-5 h-5 text-[var(--color-primary)]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[var(--color-text-primary)]">Jugadores</p>
+                    <p className="text-sm text-[var(--color-text-secondary)]">
+                      {game.players.map(p => p.name).join(', ')}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Score limit */}
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-[var(--color-warning-subtle)] flex items-center justify-center shrink-0">
+                    <TargetIcon className="w-5 h-5 text-[var(--color-warning)]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[var(--color-text-primary)]">Limite</p>
+                    <p className="text-sm text-[var(--color-text-secondary)]">{game.scoreLimit} puntos</p>
+                  </div>
+                </div>
+
+                {/* Current dealer */}
+                {currentDealer && (
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-[var(--color-surface)] flex items-center justify-center shrink-0 border border-[var(--color-border)]">
+                      <span className="text-sm font-bold text-[var(--color-warning)]">R</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-[var(--color-text-primary)]">Reparte</p>
+                      <p className="text-sm text-[var(--color-warning)]">{currentDealer.name}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Progress */}
+                <div className="pt-4 border-t border-[var(--color-border)]">
+                  <div className="flex items-center justify-between text-sm text-[var(--color-text-muted)] mb-2">
+                    <span>Rondas jugadas</span>
+                    <span className="font-mono font-medium text-[var(--color-text-primary)]">{game.rounds.length}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop add round button */}
+              {!isGameOver && (
+                <button
+                  onClick={() => setShowAddRound(true)}
+                  className="mt-6 w-full py-4 text-white font-semibold rounded-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  style={{ 
+                    background: 'linear-gradient(135deg, var(--color-primary) 0%, #059669 100%)',
+                    boxShadow: '0 4px 24px rgba(16, 185, 129, 0.3)'
+                  }}
+                >
+                  <PlusIcon className="w-5 h-5" />
+                  <span>Anotar ronda</span>
+                </button>
+              )}
+            </div>
+          </aside>
+        </div>
       </div>
 
-      {/* Add round button */}
+      {/* Mobile add round button */}
       {!isGameOver && (
-        <div className="sticky bottom-0 px-4 py-4 glass border-t border-[var(--color-border)] safe-bottom">
+        <div className="lg:hidden sticky bottom-0 px-4 py-4 glass border-t border-[var(--color-border)] safe-bottom">
           <button
             onClick={() => setShowAddRound(true)}
             className="w-full max-w-lg mx-auto block py-4 text-white font-semibold rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
